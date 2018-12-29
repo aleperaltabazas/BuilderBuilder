@@ -1,17 +1,21 @@
 class BuilderBuilder
-  attr_accessor :klass, :rules, :parameters
+  attr_accessor :target_class, :rules, :parameters
 
   def initialize(klass)
-    self.klass = klass
+    self.target_class = klass
   end
 
   def build
-    builder = Builder.new(klass, rules)
+    builder = Builder.new(target_class, rules)
 
-    klass.attributes.each do |attribute|
+    target_class.attributes.each do |attribute|
       builder.define_singleton_method(attribute) do
         builder.class.attr_accessor(attribute)
       end
     end
+  end
+
+  def add_rule(&block)
+    rules.append(Rule.new(&block))
   end
 end

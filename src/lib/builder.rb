@@ -1,18 +1,18 @@
 class Builder
-  attr_accessor :klass, :rules, :parameters
+  attr_accessor :target_class, :rules, :parameters
 
   def initialize(klass, rules)
-    self.klass = klass
+    self.target_class = klass
     self.rules = rules
   end
 
   def build
     if rules.any? do |rule|
-      rule.satisfies?(self)
+      !rule.satisfies?(self)
     end
       raise ArgumentError 'Didn\'t meet the criteria'
     end
 
-    klass.new(*parameters)
+    target_class.new(*parameters)
   end
 end
