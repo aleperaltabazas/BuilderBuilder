@@ -10,21 +10,23 @@ class Object
   def self.attr_reader(*vars)
     self.attrs = Attributes.new if attrs.nil?
 
-    attrs.add_readers(*vars)
+    attrs.add_readers(vars)
     super(*vars)
   end
 
   def self.attr_accessor(*vars)
     self.attrs = Attributes.new if attrs.nil?
 
-    attrs.add_accessors(*vars)
+    attrs.add_accessors(vars)
     super(*vars)
   end
 
   def self.attributes
-    attrs.get_all
-  rescue NoMethodError => _
-    []
+    if attrs.nil?
+      []
+    else
+      attrs.all_attributes.flatten
+    end
   end
 
   def attributes

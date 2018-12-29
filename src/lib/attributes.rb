@@ -6,12 +6,20 @@ class Attributes
     self.readers.concat readers
   end
 
-  def add_accessors(accesors)
+  def add_accessors(*accesors)
     self.accessors ||= []
     self.accessors.concat accesors
   end
 
-  def get_all
-    self.readers.concat self.accessors
+  def all_attributes
+    if readers.nil? && accessors.nil?
+      []
+    elsif readers.nil?
+      accessors
+    elsif accessors.nil?
+      readers
+    else
+      readers.concat accessors
+    end
   end
 end
