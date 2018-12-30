@@ -1,5 +1,5 @@
 require 'rspec'
-require_relative '../lib/object'
+require_relative '../lib/Object/object'
 
 describe 'Attributes spec' do
   it 'Defining only readers should still give me a list of the attributes' do

@@ -1,5 +1,5 @@
 require 'rspec'
-require_relative '../lib/rule'
+require_relative '../lib/Rule/rule'
 
 describe 'Rule spec' do
   class A
@@ -20,5 +20,14 @@ describe 'Rule spec' do
 
   it 'An instance of A with foo = 2 should not satisfy the rule' do
     expect(rule.satisfies?(A.new(2))).to be_falsey
+  end
+
+  it 'An instance of B should raise NameError' do
+    expect do
+      class B
+      end
+
+      rule.satisfies?(B.new)
+    end.to raise_exception(NameError)
   end
 end

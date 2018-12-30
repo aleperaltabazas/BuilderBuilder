@@ -1,4 +1,5 @@
-require_relative 'rule'
+require_relative '../Rule/rule'
+require_relative '../Rule/rule'
 
 class Builder
   attr_accessor :target_class, :rules
@@ -9,10 +10,8 @@ class Builder
   end
 
   def build
-    if rules.any? do |rule|
-      !rule.satisfies?(self)
-    end
-      raise ArgumentError 'Didn\'t meet the criteria'
+    rules.each do |rule|
+      raise ValidationError(rule) unless rule.satisfies?(self)
     end
 
     target_class.new(*attributes)
