@@ -1,5 +1,5 @@
 require_relative '../Rule/rule'
-require_relative '../Rule/rule'
+require_relative '../Exception/validation_error'
 
 class Builder
   attr_accessor :target_class, :rules
@@ -10,10 +10,14 @@ class Builder
   end
 
   def build
-    rules.each do |rule|
-      raise ValidationError(rule) unless rule.satisfies?(self)
-    end
-
+    valid?
     target_class.new(*attributes)
   end
+
+  def valid?
+    rules.each do |rule|
+      raise ValidationError.new(rule) unless rule.satisfies?(self)
+    end
+  end
+
 end

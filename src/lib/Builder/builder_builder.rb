@@ -1,16 +1,18 @@
 class BuilderBuilder
   attr_accessor :target_class, :rules, :parameters
 
-  def initialize(klass)
-    self.target_class = klass
+  def initialize(target_class)
+    @target_class = target_class
+    @rules = []
   end
 
   def build
     builder = Builder.new(target_class, rules)
-
     target_class.attributes.each do |attribute|
       builder.class.attr_accessor attribute
     end
+
+    builder
   end
 
   def add_rule(&block)
