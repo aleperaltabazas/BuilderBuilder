@@ -6,6 +6,6 @@ class Rule
   end
 
   def satisfies?(object)
-    object.instance_eval(rule)
+    object.instance_eval(&rule)
   end
 end

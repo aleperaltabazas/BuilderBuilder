@@ -1,8 +1,10 @@
-class Builder
-  attr_accessor :target_class, :rules, :parameters
+require_relative 'rule'
 
-  def initialize(klass, rules)
-    self.target_class = klass
+class Builder
+  attr_accessor :target_class, :rules
+
+  def initialize(target_class, rules)
+    self.target_class = target_class
     self.rules = rules
   end
 
@@ -13,6 +15,6 @@ class Builder
       raise ArgumentError 'Didn\'t meet the criteria'
     end
 
-    target_class.new(*parameters)
+    target_class.new(*attributes)
   end
 end

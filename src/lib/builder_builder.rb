@@ -9,9 +9,7 @@ class BuilderBuilder
     builder = Builder.new(target_class, rules)
 
     target_class.attributes.each do |attribute|
-      builder.define_singleton_method(attribute) do
-        builder.class.attr_accessor(attribute)
-      end
+      builder.class.attr_accessor attribute
     end
   end
 
