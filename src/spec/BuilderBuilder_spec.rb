@@ -52,4 +52,21 @@ describe 'BuilderBuilder spec' do
     a = builder.build
     expect(a.foo).to eq(42)
   end
+
+  it 'Building a builder with contradictory rules' do
+    builderBuilder = BuilderBuilder.new(Foo)
+    builderBuilder.add_rule do
+      foo.equal? 42
+    end
+
+    builderBuilder.add_rule do
+      !foo.equal? 42
+    end
+
+    builder = builderBuilder.build
+
+    expect do
+      builder.build
+    end.to raise_exception ValidationError
+  end
 end
