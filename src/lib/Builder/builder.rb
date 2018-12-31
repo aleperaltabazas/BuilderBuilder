@@ -23,7 +23,7 @@ class Builder
 
   def valid?
     rules.each do |rule|
-      raise ValidationError.new(rule) unless rule.satisfies?(self)
+      raise ValidationError, rule unless rule.satisfies?(self)
     end
   end
 end

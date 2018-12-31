@@ -15,17 +15,13 @@ describe 'BuilderBuilder spec' do
     end
   end
 
-  rule = Rule.new do
-    !foo.nil? && !bar.nil?
-  end
-
   it 'Trying to build without setting values should raise validation error' do
-    builderBuilder = BuilderBuilder.new(Foo)
-    builderBuilder.add_rule do
+    builder_builder = BuilderBuilder.new(Foo)
+    builder_builder.add_rule do
       !foo.nil?
     end
 
-    builder = builderBuilder.build
+    builder = builder_builder.build
 
     expect do
       builder.build
@@ -33,16 +29,16 @@ describe 'BuilderBuilder spec' do
   end
 
   it 'Trying to build with foo > 3 and bar not nil' do
-    builderBuilder = BuilderBuilder.new(Foo)
-    builderBuilder.add_rule do
+    builder_builder = BuilderBuilder.new(Foo)
+    builder_builder.add_rule do
       foo > 3
     end
 
-    builderBuilder.add_rule do
+    builder_builder.add_rule do
       !foo.nil?
     end
 
-    builder = builderBuilder.build
+    builder = builder_builder.build
     builder.foo = 42
     builder.bar = 'bar'
 
@@ -51,19 +47,21 @@ describe 'BuilderBuilder spec' do
 
     a = builder.build
     expect(a.foo).to eq(42)
+    expect(a.bar).to eq('bar')
   end
 
   it 'Building a builder with contradictory rules' do
-    builderBuilder = BuilderBuilder.new(Foo)
-    builderBuilder.add_rule do
+    builder_builder = BuilderBuilder.new(Foo)
+    builder_builder.add_rule do
       foo.equal? 42
     end
 
-    builderBuilder.add_rule do
+    builder_builder.add_rule do
       !foo.equal? 42
     end
 
-    builder = builderBuilder.build
+    builder = builder_builder.build
+    builder.foo = 3
 
     expect do
       builder.build
