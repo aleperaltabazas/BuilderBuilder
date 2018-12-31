@@ -2,16 +2,23 @@ require_relative '../Rule/rule'
 require_relative '../Exception/validation_error'
 
 class Builder
-  attr_accessor :target_class, :rules
+  attr_accessor :target_class, :rules, :parameters
 
   def initialize(target_class, rules)
-    self.target_class = target_class
-    self.rules = rules
+    @target_class = target_class
+    @rules = rules
+    @parameters = target_class.attributes
   end
 
   def build
     valid?
-    target_class.new(*attributes)
+    target_class.new(*parameter_values)
+  end
+
+  def parameter_values
+    parameters.map do |parameter|
+      send(parameter)
+    end
   end
 
   def valid?
@@ -19,5 +26,4 @@ class Builder
       raise ValidationError.new(rule) unless rule.satisfies?(self)
     end
   end
-
 end

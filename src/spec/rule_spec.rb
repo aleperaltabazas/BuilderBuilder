@@ -2,7 +2,7 @@ require 'rspec'
 require_relative '../lib/Rule/rule'
 
 describe 'Rule spec' do
-  class A
+  class Foo
     attr_accessor :foo
 
     def initialize(value)
@@ -15,11 +15,11 @@ describe 'Rule spec' do
   end
 
   it 'An instance of A with foo = 42 should satisfy the rule' do
-    expect(rule.satisfies?(A.new(42))).to be_truthy
+    expect(rule.satisfies?(Foo.new(42))).to be_truthy
   end
 
   it 'An instance of A with foo = 2 should not satisfy the rule' do
-    expect(rule.satisfies?(A.new(2))).to be_falsey
+    expect(rule.satisfies?(Foo.new(2))).to be_falsey
   end
 
   it 'An instance of B should raise NameError' do

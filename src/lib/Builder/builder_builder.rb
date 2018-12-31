@@ -1,5 +1,5 @@
 class BuilderBuilder
-  attr_accessor :target_class, :rules, :parameters
+  attr_accessor :target_class, :rules
 
   def initialize(target_class)
     @target_class = target_class

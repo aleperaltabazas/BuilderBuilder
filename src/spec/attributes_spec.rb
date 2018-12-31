@@ -3,11 +3,11 @@ require_relative '../lib/Object/object'
 
 describe 'Attributes spec' do
   it 'Defining only readers should still give me a list of the attributes' do
-    class A
+    class Foo
       attr_reader :a, :b
     end
 
-    a = A.new
+    a = Foo.new
     expect(a.attributes).to eq(%i[a b])
   end
 
