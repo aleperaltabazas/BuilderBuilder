@@ -11,7 +11,7 @@ class Builder
   end
 
   def build
-    valid?
+    validate_rules
     target_class.new(*parameter_values)
   end
 
@@ -21,7 +21,7 @@ class Builder
     end
   end
 
-  def valid?
+  def validate_rules
     rules.each do |rule|
       raise ValidationError, rule unless rule.satisfies?(self)
     end
