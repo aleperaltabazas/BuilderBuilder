@@ -7,25 +7,24 @@ class BuilderBuilder
   end
 
   def build(validate = true)
-    validate_contradictions if validate
-
     builder = Builder.new(target_class, rules)
     target_class.attributes.each do |attribute|
       builder.class.attr_accessor attribute
     end
 
+    validate_contradictions(builder) if validate
+
     builder
   end
 
-  def validate_contradictions
+  def validate_contradictions(builder)
     rules.each do |rule|
-      this = copy
       other_rules = rules.reject do |other_rule|
         other_rule.equal?(rule)
       end
 
       next unless other_rules.any? do |other_rule|
-        rule.contradiction?(other_rule, this)
+        rule.contradiction?(other_rule, builder)
       end
       raise ContradictionError
     end
@@ -33,9 +32,5 @@ class BuilderBuilder
 
   def add_rule(&block)
     rules.append(Rule.new(&block))
-  end
-
-  def copy
-    BuilderBuilder.new(target_class, rules)
   end
 end

@@ -1,3 +1,5 @@
+require_relative '../Contradiction/context_provider'
+
 class Rule
   attr_accessor :rule
 
@@ -14,6 +16,11 @@ class Rule
   end
 
   def contrary?(other_rule, object)
-    false
+    methods = ContextProvider.new(object).evaluate(self)
+    other_methods = ContextProvider.new(object).evaluate(other_rule)
+    puts methods.to_s
+    puts other_methods.to_s
+
+    methods.equal? other_methods
   end
 end
