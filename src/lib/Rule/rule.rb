@@ -1,26 +1,34 @@
+require 'sourcify'
+require 'logic_analyzer'
 require_relative '../Contradiction/context_provider'
+require_relative 'rule_map'
 
 class Rule
-  attr_accessor :rule
+  attr_accessor :rule, :map
 
-  def initialize(&block)
+  def initialize(map, &block)
     self.rule = Proc.new(&block)
+    self.map = map
   end
 
   def satisfies?(object)
     object.instance_eval(&rule)
   end
 
-  def contradiction?(other_rule, object)
-    contrary?(other_rule, object) && !other_rule.satisfies?(object)
+  def contradictory?(other_rule)
+    analyzer = LogicAnalyzer.new(as_proposition, other_rule.as_proposition)
+    analyzer.parse
+    !analyzer.evaluate
   end
 
-  def contrary?(other_rule, object)
-    methods = ContextProvider.new(object).evaluate(self)
-    other_methods = ContextProvider.new(object).evaluate(other_rule)
-    puts methods.to_s
-    puts other_methods.to_s
-
-    methods.equal? other_methods
+  def as_proposition
+    rule.to_source(strip_enclosure: true).gsub(/>|>=/, 'then')
+        .gsub(/<|<=/, 'then !')
+        .gsub(/==|equal\?/, 'only_if')
+        .gsub(/nil\?/, '!= nil')
+        .gsub(/\d+/) do |match|
+      map.fetch(match)
+    end
+        .tr('.', ' ')
   end
 end

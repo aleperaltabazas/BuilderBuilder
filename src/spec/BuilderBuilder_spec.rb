@@ -2,7 +2,8 @@ require 'rspec'
 require_relative '../lib/Rule/rule'
 require_relative '../lib/Builder/builder.rb'
 require_relative '../lib/Builder/builder_builder.rb'
-require_relative '../../src/lib/Exception/validation_error'
+require_relative '../lib/Exception/validation_error'
+require_relative '../lib/Exception/contradiction_error'
 require_relative '../lib/Object/object'
 
 describe 'BuilderBuilder spec' do
@@ -28,17 +29,17 @@ describe 'BuilderBuilder spec' do
     end.to raise_exception(ValidationError)
   end
 
-  it 'Trying to build with foo > 3 and bar not nil' do
+  it 'Trying to build with foo > 3 and foo not nil should raise Contingency' do
     builder_builder = BuilderBuilder.new(Foo)
     builder_builder.add_rule do
       foo > 3
     end
 
     builder_builder.add_rule do
-      !foo.nil?
+      foo != nil
     end
 
-    builder = builder_builder.build
+    builder = builder_builder.build(true, true)
     builder.foo = 42
     builder.bar = 'bar'
 
@@ -50,21 +51,20 @@ describe 'BuilderBuilder spec' do
     expect(a.bar).to eq('bar')
   end
 
-  it 'Building a builder with contradictory rules' do
+  it 'Building a builder with contradictory rules should raise Contradiction Error' do
     builder_builder = BuilderBuilder.new(Foo)
     builder_builder.add_rule do
-      foo.equal? 42
+      foo == 42
     end
 
     builder_builder.add_rule do
-      !foo.equal? 42
+      foo != 42
     end
 
-    builder = builder_builder.build
-    builder.foo = 3
-
     expect do
-      builder.build
-    end.to raise_exception ValidationError
+      builder_builder.build(true, false)
+    end.to raise_exception(ContradictionError)
   end
+
+
 end
