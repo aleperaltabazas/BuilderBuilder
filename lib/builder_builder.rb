@@ -1,0 +1,7 @@
+require_relative 'Builder/builder'
+require_relative 'Builder/builder_builder'
+require_relative 'Exception/contradiction_error'
+require_relative 'Exception/validation_error'
+require_relative 'Object/object'
+require_relative 'Rule/rule'
+require_relative 'Rule/rule_map'
