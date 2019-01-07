@@ -1,6 +1,5 @@
 require 'sourcify'
 require 'logic_analyzer'
-require_relative '../Contradiction/context_provider'
 require_relative 'rule_map'
 
 class Rule
