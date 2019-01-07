@@ -29,6 +29,6 @@ class Rule
         .gsub(/\d+/) do |match|
       map.fetch(match)
     end
-        .tr('.', ' ')
+        .tr('.', ' ')[1..-2]
   end
 end
