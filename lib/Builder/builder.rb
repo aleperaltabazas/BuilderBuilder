@@ -4,10 +4,13 @@ require_relative '../Exception/validation_error'
 class Builder
   attr_accessor :target_class, :rules, :parameters
 
-  def initialize(target_class, rules)
+  def initialize(target_class, attributes, rules)
     @target_class = target_class
     @rules = rules
-    @parameters = target_class.attributes
+    attributes.each do |attribute|
+      self.class.send(:attr_accessor, attribute)
+    end
+    @parameters = attributes
   end
 
   def build

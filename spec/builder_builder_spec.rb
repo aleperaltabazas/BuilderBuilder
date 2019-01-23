@@ -17,7 +17,7 @@ describe 'BuilderBuilder spec' do
   end
 
   it 'Trying to build without setting values should raise validation error' do
-    builder_builder = BuilderBuilder.new(TestClass)
+    builder_builder = BuilderBuilder.new(TestClass, [:foo, :bar])
     builder_builder.add_rule do
       !foo.nil?
     end
@@ -30,7 +30,7 @@ describe 'BuilderBuilder spec' do
   end
 
   it 'Trying to build with foo > 3 and foo not nil should raise Contingency' do
-    builder_builder = BuilderBuilder.new(TestClass)
+    builder_builder = BuilderBuilder.new(TestClass, [:foo, :bar])
     builder_builder.add_rule do
       foo > 3
     end
@@ -52,7 +52,7 @@ describe 'BuilderBuilder spec' do
   end
 
   it 'Building a builder with contradictory rules should raise Contradiction Error' do
-    builder_builder = BuilderBuilder.new(TestClass)
+    builder_builder = BuilderBuilder.new(TestClass, [:foo, :bar])
     builder_builder.add_rule do
       foo == 42
     end

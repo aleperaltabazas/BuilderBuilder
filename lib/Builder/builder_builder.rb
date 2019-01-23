@@ -2,16 +2,17 @@ require 'sourcify'
 require_relative '../Rule/rule_map'
 
 class BuilderBuilder
-  attr_accessor :target_class, :rules, :map
+  attr_accessor :target_class, :rules, :map, :attributes
 
-  def initialize(target_class, rules = [])
+  def initialize(target_class, attributes, rules = [])
     @target_class = target_class
     @rules = rules
+    @attributes = attributes
     @map = RuleMap.new
   end
 
   def build(validate = true, skip_contingency = false)
-    builder = Builder.new(target_class, rules)
+    builder = Builder.new(target_class, attributes, rules)
     target_class.attributes.each do |attribute|
       builder.class.attr_accessor attribute
     end
