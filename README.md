@@ -5,6 +5,8 @@ The Builder Builder "framework" generifies the logic of a Builder class, this be
 Let's get at it with an example.
 
 ```ruby
+require 'builder_builder'
+
 class SomeClass
   def initialize(foo, bar)
     @foo = foo
@@ -46,3 +48,5 @@ some_object = builder.build
 some_object.say_foo
 > 4
 ```
+
+Finally, to install just run ```gem install builder_builder``` and then include the gem in your project.
